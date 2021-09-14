@@ -4,7 +4,8 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 
 namespace kamafi.liability.data
-{public static class Keys
+{
+    public static class Keys
     {
         public const string Data = nameof(Data);
         public const string PostgreSQL = nameof(PostgreSQL);
