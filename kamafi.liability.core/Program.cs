@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace aiof.liability.core
+namespace kamafi.liability.core
 {
     public class Program
     {

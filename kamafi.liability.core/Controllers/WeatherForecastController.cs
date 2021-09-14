@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace aiof.liability.core.Controllers
+namespace kamafi.liability.core.Controllers
 {
     [ApiController]
     [Route("[controller]")]

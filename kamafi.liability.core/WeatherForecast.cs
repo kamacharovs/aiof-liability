@@ -1,6 +1,6 @@
 using System;
 
-namespace aiof.liability.core
+namespace kamafi.liability.core
 {
     public class WeatherForecast
     {

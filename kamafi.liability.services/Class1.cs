@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace aiof.liability.services
+namespace kamafi.liability.services
 {
     public class Class1
     {

@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "aiof.liability.core": {
+    "kamafi.liability.core": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,
