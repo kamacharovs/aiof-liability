@@ -30,6 +30,31 @@ namespace kamafi.liability.data
                 e.Property(x => x.Name).HasSnakeCaseColumnName().HasMaxLength(100).IsRequired();
                 e.Property(x => x.PublicKey).HasSnakeCaseColumnName().IsRequired();
             });
+
+            modelBuilder.Entity<Liability>(e =>
+            {
+                e.ToTable(Keys.Entity.Liability);
+
+                e.HasKey(x => x.Id);
+
+                e.HasQueryFilter(x => x.UserId == Tenant.UserId
+                    && !x.IsDeleted);
+
+                e.Property(x => x.Id).HasSnakeCaseColumnName().ValueGeneratedOnAdd().IsRequired();
+                e.Property(x => x.PublicKey).HasSnakeCaseColumnName().IsRequired();
+                e.Property(x => x.Name).HasSnakeCaseColumnName().HasMaxLength(100).IsRequired();
+                e.Property(x => x.TypeName).HasSnakeCaseColumnName().HasMaxLength(100).IsRequired();
+                e.Property(x => x.Value).HasSnakeCaseColumnName().IsRequired();
+                e.Property(x => x.MonthlyPayment).HasSnakeCaseColumnName();
+                e.Property(x => x.Years).HasSnakeCaseColumnName();
+                e.Property(x => x.UserId).HasSnakeCaseColumnName().IsRequired();
+                e.Property(x => x.IsDeleted).HasSnakeCaseColumnName().IsRequired();
+
+                e.HasOne(x => x.Type)
+                    .WithMany()
+                    .HasForeignKey(x => x.TypeName)
+                    .IsRequired();
+            });
         }
     }
 }

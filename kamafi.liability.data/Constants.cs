@@ -57,6 +57,7 @@ namespace kamafi.liability.data
         public static class Entity
         {
             public const string LiabilityType = nameof(data.LiabilityType);
+            public const string Liability = nameof(data.Liability);
         }
     }
 
