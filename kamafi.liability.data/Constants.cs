@@ -9,7 +9,7 @@ namespace kamafi.liability.data
     {
         public const string Data = nameof(Data);
         public const string PostgreSQL = nameof(PostgreSQL);
-        public const string DataPostgreSQL = Data + ":" + PostgreSQL;
+        public const string DataPostgreSQL = nameof(Data) + ":" + nameof(PostgreSQL);
 
         public const string Eventing = nameof(Eventing);
         public const string BaseUrl = nameof(BaseUrl);
@@ -18,6 +18,10 @@ namespace kamafi.liability.data
         public const string EventingBaseUrl = nameof(Eventing) + ":" + nameof(BaseUrl);
         public const string EventingFunctionKeyHeaderName = nameof(Eventing) + ":" + nameof(FunctionKeyHeaderName);
         public const string EventingFunctionKey = nameof(Eventing) + ":" + nameof(FunctionKey);
+
+        public const string Cors = nameof(Cors);
+        public const string Portal = nameof(Portal);
+        public const string CorsPortal = nameof(Cors) + ":" + nameof(Portal);
 
         public const string Jwt = nameof(Jwt);
         public const string Bearer = nameof(Bearer);
@@ -48,12 +52,11 @@ namespace kamafi.liability.data
         public static class Claim
         {
             public const string UserId = "user_id";
-            public const string ClientId = "client_id";
-            public const string PublicKey = "public_key";
         }
 
         public static class Entity
         {
+            public const string LiabilityType = nameof(data.LiabilityType);
         }
     }
 

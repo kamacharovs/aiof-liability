@@ -8,27 +8,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace kamafi.liability.data
 {
-    public class Tenant
+    public class Tenant : ITenant
     {
         [JsonPropertyName("user_id")]
-        public int? UserId { get; set; }
-
-        [JsonPropertyName("client_id")]
-        public int? ClientId { get; set; }
-
-        [JsonPropertyName("public_key")]
-        public Guid? PublicKey { get; set; }
-
-        [JsonIgnore]
-        public int TenantId
-        {
-            get
-            {
-                return UserId.HasValue
-                    ? (int)UserId
-                    : (int)ClientId;
-            }
-        }
+        public int UserId { get; set; }
 
         [JsonIgnore]
         public string Log
@@ -50,16 +33,11 @@ namespace kamafi.liability.data
 
         public void Set(ClaimsPrincipal user)
         {
-            int userId, clientId;
-            Guid publicKey;
+            int userId;
 
             int.TryParse(user?.FindFirst(Keys.Claim.UserId)?.Value, out userId);
-            int.TryParse(user?.FindFirst(Keys.Claim.ClientId)?.Value, out clientId);
-            Guid.TryParse(user?.FindFirst(Keys.Claim.PublicKey)?.Value, out publicKey);
 
             UserId = userId;
-            ClientId = clientId;
-            PublicKey = publicKey;
         }
     }
 }

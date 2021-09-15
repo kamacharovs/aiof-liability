@@ -14,6 +14,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
+using kamafi.liability.data;
+using kamafi.liability.services;
+
 namespace kamafi.liability.core
 {
     [ExcludeFromCodeCoverage]
@@ -41,19 +44,17 @@ namespace kamafi.liability.core
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (_env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "aiof.liability.core v1"));
+                app.UseCors(x => x.WithOrigins(_config[Keys.CorsPortal]).AllowAnyHeader().AllowAnyMethod());
             }
 
-            app.UseHttpsRedirection();
+            app.UseHealthChecks("/health");
+            app.UseSwagger();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

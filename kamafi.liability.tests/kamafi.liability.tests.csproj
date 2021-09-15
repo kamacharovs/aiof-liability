@@ -18,5 +18,10 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\kamafi.liability.data\kamafi.liability.data.csproj" />
+    <ProjectReference Include="..\kamafi.liability.services\kamafi.liability.services.csproj" />
+  </ItemGroup>
 
 </Project>
