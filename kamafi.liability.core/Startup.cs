@@ -1,18 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text.Json;
 using System.Diagnostics.CodeAnalysis;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
+using Microsoft.FeatureManagement;
 
 using kamafi.liability.data;
 using kamafi.liability.services;
@@ -35,7 +31,24 @@ namespace kamafi.liability.core
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services
+                .AddScoped<ITenant, Tenant>();
+
+            services.AddDbContext<LiabilityContext>(o => o.UseNpgsql(_config[Keys.DataPostgreSQL], o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
+
+            services.AddHealthChecks();
+            services.AddFeatureManagement();
+            services.AddLogging()
+                .AddHttpContextAccessor()
+                .AddApplicationInsightsTelemetry()
+                .AddLiabilityApiVersioning();
+
+            services.AddControllers()
+                .AddJsonOptions(o =>
+                {
+                    o.JsonSerializerOptions.WriteIndented = true;
+                    o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -5,6 +5,29 @@ using Microsoft.AspNetCore.Http;
 
 namespace kamafi.liability.data
 {
+    public static class Constants
+    {
+        public const string Accept = nameof(Accept);
+        public const string ApplicationJson = "application/json";
+        public const string ApplicationProblemJson = "application/problem+json";
+
+        public const string DefaultMessage = "An unexpected error has occurred";
+        public const string DefaultValidationMessage = "One or more validation errors have occurred. Please see errors for details";
+        public const string DefaultUnauthorizedMessage = "Unauthorized. Missing, invalid or expired credentials provided";
+        public const string DefaultForbiddenMessage = "Forbidden. You don't have enough permissions to access this API";
+
+        public const string ApiName = "kamafi-liability";
+        public const string ApiRoute = "v{version:apiVersion}/liabilities";
+        public const string ApiV1 = "1.0";
+        public static string ApiV1Full = $"v{ApiV1}";
+        public static string[] ApiSupportedVersions
+            => new string[]
+            {
+                ApiV1Full
+            };
+        public static string DefaultUnsupportedApiVersionMessage = $"Unsupported API version specified. The supported versions are {string.Join(", ", ApiSupportedVersions)}";
+    }
+
     public static class Keys
     {
         public const string Data = nameof(Data);
