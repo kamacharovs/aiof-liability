@@ -12,16 +12,25 @@ using AutoMapper;
 
 using kamafi.liability.data;
 
+/*
+TODO
+- Implement "Strategry" design pattern for all Liabilities
+    https://refactoring.guru/design-patterns/strategy
+Generic Repository Pattern
+*/
+
 namespace kamafi.liability.services
 {
-    public class LiabilityRepository : ILiabilityRepository
+    public class LiabilityRepository<T, TDto> : ILiabilityRepository<T, TDto>
+        where T : Liability
+        where TDto : LiabilityDto
     {
-        private readonly ILogger<LiabilityRepository> _logger;
+        private readonly ILogger<LiabilityRepository<T, TDto>> _logger;
         private readonly IMapper _mapper;
         private readonly LiabilityContext _context;
 
         public LiabilityRepository(
-            ILogger<LiabilityRepository> logger,
+            ILogger<LiabilityRepository<T, TDto>> logger,
             IMapper mapper,        
             LiabilityContext context)
         {
@@ -40,9 +49,9 @@ namespace kamafi.liability.services
                 : query;
         }
 
-        private IQueryable<Liability> GetQuery(bool asNoTracking = true)
+        private IQueryable<T> GetQuery(bool asNoTracking = true)
         {
-            var query = _context.Liabilities
+            var query = _context.Set<T>()
                 .Include(x => x.Type)
                 .AsQueryable();
 
@@ -51,9 +60,7 @@ namespace kamafi.liability.services
                 : query;
         }
 
-        private async Task<T> AddAsync<T, TDto>(TDto dto)
-            where T : Liability
-            where TDto : LiabilityDto
+        private async Task<T> AddAsync(TDto dto)
         {
             var liability = _mapper.Map<T>(dto);
 
