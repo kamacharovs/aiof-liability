@@ -31,8 +31,9 @@ namespace kamafi.liability.core
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddScoped<ITenant, Tenant>();
+            services.AddScoped<ILiabilityRepository, LiabilityRepository>()
+                .AddScoped<ITenant, Tenant>()
+                .AddAutoMapper(typeof(LiabilityProfile).Assembly);
 
             services.AddDbContext<LiabilityContext>(o => o.UseNpgsql(_config[Keys.DataPostgreSQL], o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
