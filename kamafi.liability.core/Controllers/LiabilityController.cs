@@ -25,5 +25,13 @@ namespace kamafi.liability.core
         {
             return "";
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddAsync(
+            [FromRoute, Required] string type,
+            [FromBody, Required] string dto)
+        {
+            return new OkObjectResult("");
+        }
     }
 }

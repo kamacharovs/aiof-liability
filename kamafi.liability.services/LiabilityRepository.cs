@@ -21,16 +21,14 @@ Generic Repository Pattern
 
 namespace kamafi.liability.services
 {
-    public class LiabilityRepository<T, TDto> : ILiabilityRepository<T, TDto>
-        where T : Liability
-        where TDto : LiabilityDto
+    public class LiabilityRepository : ILiabilityRepository
     {
-        private readonly ILogger<LiabilityRepository<T, TDto>> _logger;
+        private readonly ILogger<LiabilityRepository> _logger;
         private readonly IMapper _mapper;
         private readonly LiabilityContext _context;
 
         public LiabilityRepository(
-            ILogger<LiabilityRepository<T, TDto>> logger,
+            ILogger<LiabilityRepository> logger,
             IMapper mapper,        
             LiabilityContext context)
         {
@@ -49,9 +47,9 @@ namespace kamafi.liability.services
                 : query;
         }
 
-        private IQueryable<T> GetQuery(bool asNoTracking = true)
+        private IQueryable<Liability> GetQuery(bool asNoTracking = true)
         {
-            var query = _context.Set<T>()
+            var query = _context.Liabilities
                 .Include(x => x.Type)
                 .AsQueryable();
 
@@ -60,7 +58,9 @@ namespace kamafi.liability.services
                 : query;
         }
 
-        private async Task<T> AddAsync(TDto dto)
+        public async Task<T> AddAsync<T, TDto>(TDto dto)
+            where T : Liability
+            where TDto : LiabilityDto
         {
             var liability = _mapper.Map<T>(dto);
 
