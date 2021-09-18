@@ -20,18 +20,27 @@ namespace kamafi.liability.core
     [Consumes(Constants.ApplicationJson)]
     public class LiabilityController : ControllerBase
     {
+        private readonly ILiabilityRepository _repo;
+
+        public LiabilityController(
+            ILiabilityRepository repo)
+        {
+            _repo = repo ?? throw new ArgumentNullException(nameof(repo));
+        }
+
         [HttpGet]
         public string Get()
         {
             return "";
         }
 
+        /// <summary>
+        /// Add Liability
+        /// </summary>
         [HttpPost]
-        public async Task<IActionResult> AddAsync(
-            [FromRoute, Required] string type,
-            [FromBody, Required] string dto)
+        public async Task<IActionResult> AddAsync([FromBody, Required] LiabilityDto dto)
         {
-            return new OkObjectResult("");
+            return Created(nameof(Liability), await _repo.AddAsync(dto));
         }
     }
 }

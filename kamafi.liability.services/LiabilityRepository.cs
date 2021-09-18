@@ -14,8 +14,7 @@ using kamafi.liability.data;
 
 namespace kamafi.liability.services
 {
-    public class LiabilityRepository : BaseRepository<Liability, LiabilityDto>,
-        ILiabilityRepository
+    public class LiabilityRepository : ILiabilityRepository
     {
         private readonly ILogger<LiabilityRepository> _logger;
         private readonly IMapper _mapper;
@@ -25,16 +24,56 @@ namespace kamafi.liability.services
             ILogger<LiabilityRepository> logger,
             IMapper mapper,        
             LiabilityContext context)
-            : base(logger, mapper, context)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public new async Task<Liability> AddAsync(LiabilityDto dto)
+        public IQueryable<LiabilityType> GetTypesQuery(bool asNoTracking = true)
         {
-            return await base.AddAsync(dto);
+            var query = _context.LiabilityTypes
+                .AsQueryable();
+
+            return asNoTracking
+                ? query.AsNoTracking()
+                : query;
+        }
+
+        public IQueryable<Liability> GetQuery(bool asNoTracking = true)
+        {
+            var query = _context.Liabilities
+                .Include(x => x.Type)
+                .AsQueryable();
+
+            return asNoTracking
+                ? query.AsNoTracking()
+                : query;
+        }
+
+        public async Task<Liability> AddAsync(LiabilityDto dto)
+        {
+            return await AddAsync(dto);
+        }
+
+        private async Task<T> AddAsync<T, TDto>(TDto dto)
+            where T : Liability
+            where TDto : LiabilityDto
+        {
+            var liability = _mapper.Map<T>(dto);
+
+            liability.UserId = _context.Tenant.UserId;
+
+            await _context.Set<T>().AddAsync(liability);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("{Tenant} | Created Liability with Id={LiabilityId}, PublicKey={LiabilityPublicKey} and UserId={LiabilityUserId}",
+                _context.Tenant.Log,
+                liability.Id,
+                liability.PublicKey,
+                liability.UserId);
+
+            return liability;
         }
     }
 }
