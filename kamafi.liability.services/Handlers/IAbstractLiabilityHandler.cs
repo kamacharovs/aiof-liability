@@ -10,7 +10,7 @@ namespace kamafi.liability.services.handlers
 {
     public interface IAbstractLiabilityHandler
     {
-        Task<Liability> HandleAddAsync(LiabilityDto dto);
-        Task<Liability> HandleUpdateAsync(LiabilityDto dto);
+        Task<Liability> HandleAddAsync(object dto);
+        Task<Liability> HandleUpdateAsync(object dto);
     }
 }

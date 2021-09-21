@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Newtonsoft.Json;
+
 using kamafi.liability.data;
 
 namespace kamafi.liability.services.handlers
@@ -19,23 +21,22 @@ namespace kamafi.liability.services.handlers
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
         }
 
-        protected override bool CanHandleAdd(LiabilityDto dto)
+        protected override bool CanHandleAdd(object dto)
         {
-            // TODO add JsonSerialization logic
-            return true;
+            return Utils.CanDeserialize<LiabilityDto>(dto);
         }
 
-        protected override bool CanHandleUpdate(LiabilityDto dto)
+        protected override bool CanHandleUpdate(object dto)
         {
             throw new NotImplementedException();
         }
 
-        protected override async Task<Liability> OnAddAsync(LiabilityDto dto)
+        protected override async Task<Liability> OnAddAsync(object dto)
         {
-            return await _repo.AddAsync<Liability, LiabilityDto>(dto);
+            return await _repo.AddAsync<Liability, LiabilityDto>(Utils.DeserializeObject<LiabilityDto>(dto));
         }
 
-        protected override Task<Liability> OnUpdateAsync(LiabilityDto dto)
+        protected override Task<Liability> OnUpdateAsync(object dto)
         {
             throw new NotImplementedException();
         }

@@ -39,7 +39,7 @@ namespace kamafi.liability.core
         /// Add Liability
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> AddAsync([FromBody, Required] LiabilityDto dto)
+        public async Task<IActionResult> AddAsync([FromBody, Required] object dto)
         {
             return Created(nameof(Liability), await _handler.HandleAddAsync(dto));
         }

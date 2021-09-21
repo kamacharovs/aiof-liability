@@ -23,7 +23,7 @@ namespace kamafi.liability.services.handlers
             return this;
         }
 
-        async Task<Liability> IAbstractLiabilityHandler.HandleAddAsync(LiabilityDto dto)
+        async Task<Liability> IAbstractLiabilityHandler.HandleAddAsync(object dto)
         {
             if (dto is null) throw new ArgumentNullException(nameof(dto));
 
@@ -35,7 +35,7 @@ namespace kamafi.liability.services.handlers
             return await _nextHandler?.HandleAddAsync(dto) ?? throw new InvalidOperationException($"Next handler not set for type '{this.GetType().Name}' and operation 'Add'");
         }
 
-        async Task<Liability> IAbstractLiabilityHandler.HandleUpdateAsync(LiabilityDto dto)
+        async Task<Liability> IAbstractLiabilityHandler.HandleUpdateAsync(object dto)
         {
             if (dto is null) throw new ArgumentNullException(nameof(dto));
 
@@ -47,9 +47,9 @@ namespace kamafi.liability.services.handlers
             return await _nextHandler?.HandleUpdateAsync(dto) ?? throw new InvalidOperationException($"Next handler not set for type '{this.GetType().Name}' and operation 'Update'");
         }
 
-        protected abstract Task<Liability> OnAddAsync(LiabilityDto dto);
-        protected abstract Task<Liability> OnUpdateAsync(LiabilityDto dto);
-        protected abstract bool CanHandleAdd(LiabilityDto dto);
-        protected abstract bool CanHandleUpdate(LiabilityDto dto);
+        protected abstract Task<Liability> OnAddAsync(object dto);
+        protected abstract Task<Liability> OnUpdateAsync(object dto);
+        protected abstract bool CanHandleAdd(object dto);
+        protected abstract bool CanHandleUpdate(object dto);
     }
 }
