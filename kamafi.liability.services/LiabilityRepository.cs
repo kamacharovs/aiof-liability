@@ -51,12 +51,7 @@ namespace kamafi.liability.services
                 : query;
         }
 
-        public async Task<Liability> AddAsync(LiabilityDto dto)
-        {
-            return await AddAsync(dto);
-        }
-
-        private async Task<T> AddAsync<T, TDto>(TDto dto)
+        public async Task<T> AddAsync<T, TDto>(TDto dto)
             where T : Liability
             where TDto : LiabilityDto
         {

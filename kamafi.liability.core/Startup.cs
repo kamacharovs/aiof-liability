@@ -12,6 +12,7 @@ using Microsoft.FeatureManagement;
 
 using kamafi.liability.data;
 using kamafi.liability.services;
+using kamafi.liability.services.handlers;
 
 namespace kamafi.liability.core
 {
@@ -33,7 +34,10 @@ namespace kamafi.liability.core
         {
             services.AddScoped<ILiabilityRepository, LiabilityRepository>()
                 .AddScoped<ITenant, Tenant>()
+                .AddScoped<LiabilityHandler>()
                 .AddAutoMapper(typeof(LiabilityProfile).Assembly);
+
+            services.AddScoped<IAbstractLiabilityHandler>(x => x.GetRequiredService<LiabilityHandler>());
 
             services.AddDbContext<LiabilityContext>(o => o.UseNpgsql(_config[Keys.DataPostgreSQL], o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
@@ -60,7 +64,7 @@ namespace kamafi.liability.core
             }
 
             app.UseHealthChecks("/health");
-            app.UseSwagger();
+            //app.UseSwagger();
 
             app.UseRouting();
             app.UseAuthentication();

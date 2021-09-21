@@ -9,10 +9,11 @@ using Microsoft.AspNetCore.Authorization;
 
 using kamafi.liability.services;
 using kamafi.liability.data;
+using kamafi.liability.services.handlers;
 
 namespace kamafi.liability.core
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [ApiVersion(Constants.ApiV1)]
     [Route(Constants.ApiRoute)]
@@ -20,12 +21,12 @@ namespace kamafi.liability.core
     [Consumes(Constants.ApplicationJson)]
     public class LiabilityController : ControllerBase
     {
-        private readonly ILiabilityRepository _repo;
+        private readonly IAbstractLiabilityHandler _handler;
 
         public LiabilityController(
-            ILiabilityRepository repo)
+            IAbstractLiabilityHandler handler)
         {
-            _repo = repo ?? throw new ArgumentNullException(nameof(repo));
+            _handler = handler ?? throw new ArgumentNullException(nameof(handler));
         }
 
         [HttpGet]
@@ -40,7 +41,7 @@ namespace kamafi.liability.core
         [HttpPost]
         public async Task<IActionResult> AddAsync([FromBody, Required] LiabilityDto dto)
         {
-            return Created(nameof(Liability), await _repo.AddAsync(dto));
+            return Created(nameof(Liability), await _handler.HandleAddAsync(dto));
         }
     }
 }

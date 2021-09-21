@@ -7,6 +7,8 @@ namespace kamafi.liability.services
 {
     public interface ILiabilityRepository
     {
-        Task<Liability> AddAsync(LiabilityDto dto);
+        Task<T> AddAsync<T, TDto>(TDto dto)
+            where T : Liability
+            where TDto : LiabilityDto;
     }
 }
