@@ -51,7 +51,27 @@ namespace kamafi.liability.services
                 : query;
         }
 
-        public async Task<T> AddAsync<T, TDto>(TDto dto)
+        public async Task<object> AddAsync(
+            object dto,
+            string type)
+        {
+            if (type == "base")
+            {
+                return await AddAsync<Liability, LiabilityDto>(
+                    Utils.DeserializeObject<LiabilityDto>(dto));
+            }
+            else if (type == "vehicle")
+            {
+                return await AddAsync<LiabilityVehicle, LiabilityVehicleDto>(
+                    Utils.DeserializeObject<LiabilityVehicleDto>(dto));
+            }
+            else
+            {
+                throw new Exception("Error");
+            }
+        }
+
+        private async Task<T> AddAsync<T, TDto>(TDto dto)
             where T : Liability
             where TDto : LiabilityDto
         {

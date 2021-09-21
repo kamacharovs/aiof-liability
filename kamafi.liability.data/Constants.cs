@@ -81,6 +81,7 @@ namespace kamafi.liability.data
         {
             public const string LiabilityType = nameof(data.LiabilityType);
             public const string Liability = nameof(data.Liability);
+            public const string LiabilityVehicle = nameof(data.LiabilityVehicle);
         }
     }
 
