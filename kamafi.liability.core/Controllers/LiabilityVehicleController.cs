@@ -15,32 +15,26 @@ namespace kamafi.liability.core
     //[Authorize]
     [ApiController]
     [ApiVersion(Constants.ApiV1)]
-    [Route(Constants.ApiRoute)]
+    [Route(Constants.ApiVehicleRoute)]
     [Produces(Constants.ApplicationJson)]
     [Consumes(Constants.ApplicationJson)]
-    public class LiabilityController : ControllerBase
+    public class VehicleController : ControllerBase
     {
-        private readonly ILiabilityRepository _repo;
+        private readonly IVehicleRepository _repo;
 
-        public LiabilityController(
-            ILiabilityRepository repo)
+        public VehicleController(
+            IVehicleRepository repo)
         {
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
         }
 
-        [HttpGet]
-        public string Get()
-        {
-            return "";
-        }
-
         /// <summary>
-        /// Add Liability
+        /// Add Liability.Vehicle
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> AddAsync([FromBody, Required] LiabilityDto dto)
+        public async Task<IActionResult> AddAsync([FromBody, Required] VehicleDto dto)
         {
-            return Created(nameof(Liability), await _repo.AddAsync(dto));
+            return Created(nameof(Vehicle), await _repo.AddAsync(dto));
         }
     }
 }

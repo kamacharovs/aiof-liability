@@ -5,8 +5,8 @@ using kamafi.liability.data;
 
 namespace kamafi.liability.services
 {
-    public interface ILiabilityRepository
+    public interface IVehicleRepository
     {
-        Task<Liability> AddAsync(LiabilityDto dto);
+        Task<Vehicle> AddAsync(VehicleDto dto);
     }
 }

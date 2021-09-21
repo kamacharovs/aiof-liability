@@ -2,12 +2,12 @@ using System;
 
 namespace kamafi.liability.data
 {
-    public class LiabilityVehicle : Liability
+    public class Vehicle : Liability
     {
         public decimal? DownPayment { get; set; }
     }
 
-    public class LiabilityVehicleDto : LiabilityDto
+    public class VehicleDto : LiabilityDto
     {
         public decimal? DownPayment { get; set; }
     }

@@ -32,6 +32,7 @@ namespace kamafi.liability.core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ILiabilityRepository, LiabilityRepository>()
+                .AddScoped<IVehicleRepository, VehicleRepository>()
                 .AddScoped<ITenant, Tenant>()
                 .AddAutoMapper(typeof(LiabilityProfile).Assembly);
 

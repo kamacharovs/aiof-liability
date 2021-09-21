@@ -9,18 +9,18 @@ using kamafi.liability.data;
 
 namespace kamafi.liability.services
 {
-    public class LiabilityRepository : 
-        BaseRepository<Liability, LiabilityDto>, 
-        ILiabilityRepository
+    public class VehicleRepository : 
+        BaseRepository<Vehicle, VehicleDto>,
+        IVehicleRepository
     {
-        public LiabilityRepository(
-            ILogger<LiabilityRepository> logger,
+        public VehicleRepository(
+            ILogger<VehicleRepository> logger,
             IMapper mapper,        
             LiabilityContext context)
             : base(logger, mapper, context)
         { }
 
-        public new async Task<Liability> AddAsync(LiabilityDto dto)
+        public new async Task<Vehicle> AddAsync(VehicleDto dto)
         {
             return await base.AddAsync(dto);
         }
