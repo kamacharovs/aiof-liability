@@ -1,15 +1,14 @@
 using System;
-using System.Text.Json;
+using System.IO;
+using System.Reflection;
 using System.Diagnostics.CodeAnalysis;
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.FeatureManagement;
 
+using kamafi.core.middleware;
 using kamafi.liability.data;
 using kamafi.liability.services;
 
@@ -33,43 +32,22 @@ namespace kamafi.liability.core
         {
             services.AddScoped<ILiabilityRepository, LiabilityRepository>()
                 .AddScoped<IVehicleRepository, VehicleRepository>()
-                .AddScoped<ITenant, Tenant>()
                 .AddAutoMapper(typeof(LiabilityProfile).Assembly);
 
-            services.AddDbContext<LiabilityContext>(o => o.UseNpgsql(_config[Keys.DataPostgreSQL], o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
-
-            services.AddHealthChecks();
-            services.AddFeatureManagement();
-            services.AddLogging()
-                .AddHttpContextAccessor()
-                .AddApplicationInsightsTelemetry()
-                .AddLiabilityApiVersioning();
-
-            services.AddControllers()
-                .AddJsonOptions(o =>
+            services.AddKamafiServices<LiabilityContext>(
+                new kamafi.core.data.KamafiConfiguration()
                 {
-                    o.JsonSerializerOptions.WriteIndented = true;
-                    o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                    Config = _config,
+                    OpenApiName = Constants.ApiName,
+                    OpenApiVersion = Constants.ApiV1,
+                    DefaultApiVersion = Constants.ApiV1,
+                    XmlCommentsPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml")
                 });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (_env.IsDevelopment())
-            {
-                app.UseCors(x => x.WithOrigins(_config[Keys.CorsPortal]).AllowAnyHeader().AllowAnyMethod());
-            }
-
-            app.UseHealthChecks("/health");
-            //app.UseSwagger();
-
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseKamafiServices(_config, _env);
         }
     }
 }

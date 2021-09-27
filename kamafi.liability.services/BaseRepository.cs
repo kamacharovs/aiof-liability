@@ -57,7 +57,7 @@ namespace kamafi.liability.services
         {
             var liability = _mapper.Map<T>(dto);
 
-            liability.UserId = _context.Tenant.UserId;
+            liability.UserId = (int)_context.Tenant.UserId;
 
             await _context.Set<T>().AddAsync(liability);
             await _context.SaveChangesAsync();

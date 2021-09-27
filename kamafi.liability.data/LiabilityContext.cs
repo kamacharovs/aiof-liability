@@ -2,6 +2,8 @@ using System;
 
 using Microsoft.EntityFrameworkCore;
 
+using kamafi.core.data;
+
 namespace kamafi.liability.data
 {
     public class LiabilityContext : DbContext
