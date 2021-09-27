@@ -10,6 +10,7 @@ namespace kamafi.liability.data
 
     public class LoanDto : LiabilityDto
     {
-        public decimal? DownPayment { get; set; }
+        public string LoanType { get; set; }
+        public decimal? Interest { get; set; }
     }
 }
