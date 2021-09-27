@@ -35,7 +35,7 @@ namespace kamafi.liability.core
                 .AddAutoMapper(typeof(LiabilityProfile).Assembly);
 
             services.AddKamafiServices<LiabilityContext>(
-                new kamafi.core.data.KamafiConfiguration()
+                new kamafi.core.data.KamafiConfiguration
                 {
                     Config = _config,
                     OpenApiName = Constants.ApiName,
