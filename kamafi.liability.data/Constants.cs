@@ -22,6 +22,30 @@ namespace kamafi.liability.data
                 ApiV1Full
             };
         public static string DefaultUnsupportedApiVersionMessage = $"Unsupported API version specified. The supported versions are {string.Join(", ", ApiSupportedVersions)}";
+
+
+        public const string AddRuleSet = nameof(AddRuleSet);
+        public const string AddVehicleRuleSet = nameof(AddVehicleRuleSet);
+        public const string AddLoanRuleSet = nameof(AddLoanRuleSet);
+        public const string UpdateRuleSet = nameof(UpdateRuleSet);
+        public const string UpdateVehicleRuleSet = nameof(UpdateVehicleRuleSet);
+        public const string UpdateLoanRuleSet = nameof(UpdateLoanRuleSet);
+
+        public static Dictionary<string, string> AddRuleSetMap =
+            new Dictionary<string, string>
+        {
+            { nameof(LiabilityDto), AddRuleSet },
+            { nameof(VehicleDto), AddVehicleRuleSet },
+            { nameof(LoanDto), AddLoanRuleSet  }
+        };
+
+        public static Dictionary<string, string> UpdateRuleSetMap =
+            new Dictionary<string, string>
+        {
+            { nameof(LiabilityDto), UpdateRuleSet },
+            { nameof(VehicleDto), UpdateVehicleRuleSet },
+            { nameof(LoanDto), UpdateLoanRuleSet  }
+        };
     }
 
     public static class Keys

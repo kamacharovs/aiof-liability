@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 using AutoMapper;
+using FluentValidation;
 
 using kamafi.liability.data;
 
@@ -15,9 +16,10 @@ namespace kamafi.liability.services
     {
         public LiabilityRepository(
             ILogger<LiabilityRepository> logger,
-            IMapper mapper,        
+            IValidator<LiabilityDto> validator,
+            IMapper mapper,
             LiabilityContext context)
-            : base(logger, mapper, context)
+            : base(logger, validator, mapper, context)
         { }
 
         public new async Task<Liability> AddAsync(LiabilityDto dto)

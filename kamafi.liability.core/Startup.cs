@@ -8,8 +8,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using FluentValidation;
+
 using kamafi.core.middleware;
 using kamafi.liability.data;
+using kamafi.liability.data.validators;
 using kamafi.liability.services;
 
 namespace kamafi.liability.core
@@ -33,6 +36,9 @@ namespace kamafi.liability.core
             services.AddScoped<ILiabilityRepository, LiabilityRepository>()
                 .AddScoped<IVehicleRepository, VehicleRepository>()
                 .AddAutoMapper(typeof(LiabilityProfile).Assembly);
+
+            services.AddSingleton<IValidator<LiabilityDto>, LiabilityDtoValidator<LiabilityDto>>()
+                .AddSingleton<IValidator<VehicleDto>, VehicleDtoValidator>();
 
             services.AddKamafiServices<LiabilityContext>(
                 new kamafi.core.data.KamafiConfiguration

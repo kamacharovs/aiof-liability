@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 using AutoMapper;
+using FluentValidation;
 
 using kamafi.liability.data;
 
@@ -19,15 +20,18 @@ namespace kamafi.liability.services
         where TDto : LiabilityDto
     {
         private readonly ILogger<BaseRepository<T, TDto>> _logger;
+        private readonly IValidator<TDto> _validator;
         private readonly IMapper _mapper;
         private readonly LiabilityContext _context;
 
         public BaseRepository(
             ILogger<BaseRepository<T, TDto>> logger,
+            IValidator<TDto> validator,
             IMapper mapper,
             LiabilityContext context)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _validator = validator ?? throw new ArgumentNullException(nameof(validator));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
@@ -55,6 +59,10 @@ namespace kamafi.liability.services
 
         public async Task<T> AddAsync(TDto dto)
         {
+            var validatorResult = await _validator.ValidateAsync(dto, o => o.IncludeRuleSets(Constants.AddRuleSetMap[typeof(TDto).Name]));
+
+            if (!validatorResult.IsValid) throw new ValidationException(validatorResult.Errors);
+
             var liability = _mapper.Map<T>(dto);
 
             liability.UserId = (int)_context.Tenant.UserId;
