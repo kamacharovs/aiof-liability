@@ -10,8 +10,8 @@ using kamafi.liability.data;
 
 namespace kamafi.liability.services
 {
-    public class LiabilityRepository : 
-        BaseRepository<Liability, LiabilityDto>, 
+    public class LiabilityRepository :
+        BaseRepository<Liability, LiabilityDto>,
         ILiabilityRepository
     {
         public LiabilityRepository(
@@ -24,7 +24,14 @@ namespace kamafi.liability.services
 
         public new async Task<Liability> AddAsync(LiabilityDto dto)
         {
+            dto.TypeName = LiabilityTypes.Base;
+
             return await base.AddAsync(dto);
+        }
+
+        public new async Task DeleteAsync(int id)
+        {
+            await base.DeleteAsync(id);
         }
     }
 }

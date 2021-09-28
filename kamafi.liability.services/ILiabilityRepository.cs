@@ -8,5 +8,6 @@ namespace kamafi.liability.services
     public interface ILiabilityRepository
     {
         Task<Liability> AddAsync(LiabilityDto dto);
+        Task DeleteAsync(int id);
     }
 }

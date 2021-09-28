@@ -12,7 +12,7 @@ using kamafi.liability.data;
 
 namespace kamafi.liability.core
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [ApiVersion(Constants.ApiV1)]
     [Route(Constants.ApiRoute)]
@@ -28,19 +28,29 @@ namespace kamafi.liability.core
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
         }
 
-        [HttpGet]
-        public string Get()
-        {
-            return "";
-        }
-
         /// <summary>
         /// Add Liability
         /// </summary>
         [HttpPost]
+        [ProducesResponseType(typeof(kamafi.core.data.IKamafiProblemDetail), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ILiability), StatusCodes.Status201Created)]
         public async Task<IActionResult> AddAsync([FromBody, Required] LiabilityDto dto)
         {
             return Created(nameof(Liability), await _repo.AddAsync(dto));
+        }
+
+        /// <summary>
+        /// Delete Liability
+        /// </summary>
+        [HttpDelete]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(kamafi.core.data.IKamafiProblemDetail), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task <IActionResult> DeleteAsync([FromRoute, Required] int id)
+        {
+            await _repo.DeleteAsync(id);
+
+            return Ok();
         }
     }
 }

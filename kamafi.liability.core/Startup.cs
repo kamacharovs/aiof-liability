@@ -35,6 +35,7 @@ namespace kamafi.liability.core
         {
             services.AddScoped<ILiabilityRepository, LiabilityRepository>()
                 .AddScoped<IVehicleRepository, VehicleRepository>()
+                .AddScoped<ILoanRepository, LoanRepository>()
                 .AddAutoMapper(typeof(LiabilityProfile).Assembly);
 
             services.AddSingleton<IValidator<LiabilityDto>, LiabilityDtoValidator<LiabilityDto>>()

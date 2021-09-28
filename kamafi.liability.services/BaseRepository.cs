@@ -78,5 +78,21 @@ namespace kamafi.liability.services
 
             return liability;
         }
+
+        public async Task DeleteAsync(int id)
+        {
+            var asset = await _context.Set<T>()
+                .FirstOrDefaultAsync(x => x.Id == id)
+                ?? throw new core.data.KamafiNotFoundException($"Liability with Id={id} was not found");
+
+            asset.IsDeleted = true;
+
+            _context.Set<T>().Update(asset);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("{Tenant} | Soft Deleted Liability with Id={LiabilityId}",
+                _context.Tenant.Log,
+                id);
+        }
     }
 }

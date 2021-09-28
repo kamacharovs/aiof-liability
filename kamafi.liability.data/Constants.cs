@@ -14,6 +14,7 @@ namespace kamafi.liability.data
         public const string ApiName = "kamafi-liability";
         public const string ApiRoute = "v{version:apiVersion}/liabilities";
         public const string ApiVehicleRoute = "v{version:apiVersion}/liabilities/vehicle";
+        public const string ApiLoanRoute = "v{version:apiVersion}/liabilities/loan";
         public const string ApiV1 = "1.0";
         public static string ApiV1Full = $"v{ApiV1}";
         public static string[] ApiSupportedVersions
@@ -55,7 +56,15 @@ namespace kamafi.liability.data
             public const string LiabilityType = nameof(data.LiabilityType);
             public const string Liability = nameof(data.Liability);
             public const string Vehicle = nameof(data.Vehicle);
+            public const string Loan = nameof(data.Loan);
         }
     }
 
+    public static class LiabilityTypes
+    {
+        public const string Base = "base";
+        public const string Vehicle = "Vehicle";
+        public const string Loan = "loan";
+        public const string Other = "other";
+    }
 }

@@ -2,7 +2,7 @@ using System;
 
 namespace kamafi.liability.data
 {
-    public class Liability
+    public class Liability : ILiability
     {
         public int Id { get; set; }
         public Guid PublicKey { get; set; } = Guid.NewGuid();

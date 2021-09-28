@@ -13,6 +13,7 @@ namespace kamafi.liability.data
         public virtual DbSet<LiabilityType> LiabilityTypes { get; set; }
         public virtual DbSet<Liability> Liabilities { get; set; }
         public virtual DbSet<Vehicle> Vehicles { get; set; }
+        public virtual DbSet<Loan> Loans { get; set; }
 
         public LiabilityContext(DbContextOptions<LiabilityContext> options, ITenant tenant)
             : base(options)
@@ -64,6 +65,14 @@ namespace kamafi.liability.data
                 e.ToTable(Keys.Entity.Vehicle);
 
                 e.Property(x => x.DownPayment).HasSnakeCaseColumnName();
+            });
+
+            modelBuilder.Entity<Loan>(e =>
+            {
+                e.ToTable(Keys.Entity.Loan);
+
+                e.Property(x => x.LoanType).HasSnakeCaseColumnName().HasMaxLength(100).IsRequired();
+                e.Property(x => x.Interest).HasSnakeCaseColumnName();
             });
         }
     }

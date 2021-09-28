@@ -10,21 +10,21 @@ using kamafi.liability.data;
 
 namespace kamafi.liability.services
 {
-    public class VehicleRepository : 
-        BaseRepository<Vehicle, VehicleDto>,
-        IVehicleRepository
+    public class LoanRepository : 
+        BaseRepository<Loan, LoanDto>,
+        ILoanRepository
     {
-        public VehicleRepository(
-            ILogger<VehicleRepository> logger,
-            IValidator<VehicleDto> validator,
+        public LoanRepository(
+            ILogger<LoanRepository> logger,
+            IValidator<LoanDto> validator,
             IMapper mapper,        
             LiabilityContext context)
             : base(logger, validator, mapper, context)
         { }
 
-        public new async Task<Vehicle> AddAsync(VehicleDto dto)
+        public new async Task<Loan> AddAsync(LoanDto dto)
         {
-            dto.TypeName = LiabilityTypes.Vehicle;
+            dto.TypeName = LiabilityTypes.Loan;
 
             return await base.AddAsync(dto);
         }
