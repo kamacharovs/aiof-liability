@@ -1,0 +1,82 @@
+trigger:
+- main
+
+resources:
+- repo: self
+
+variables:
+  configuration: release
+  targetFramework: net5.0
+  sdkVersion: 5.0.100
+  projectFile: kamafi.liability.core/kamafi.liability.core.csproj
+  projectFileTest: kamafi.liability.tests/kamafi.liability.tests.csproj
+  outputPath: app/publish
+
+stages:
+- stage: Build
+  displayName: Build
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: UseDotNet@2
+      displayName: install .net5 sdk
+      inputs:
+        packageType: sdk
+        version: $(sdkVersion)
+
+    - task: AzureKeyVault@2
+      inputs:
+        azureSubscription: 'Visual Studio Enterprise (ca878169-d059-41cb-a0f0-d2e714ea53b5)'
+        KeyVaultName: 'aiof-dev-kv'
+        SecretsFilter: '*'
+        RunAsPreJob: true
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: custom
+        custom: dotnet nuget add source -u $(GithubPackageUsername) -p $(GithubPackageToken) --store-password-in-clear-text --name github $(GithubPackageUrl)
+
+    - task: DotNetCoreCLI@2
+      displayName: restore
+      inputs:
+        command: restore
+        projects: $(projectFile)
+
+    - task: DotNetCoreCLI@2
+      displayName: build
+      inputs:
+        command: build
+        projects: $(projectFile)
+        arguments: -c $(configuration) -f $(targetFramework)
+
+    - task: DotNetCoreCLI@2
+      displayName: test
+      inputs:
+        command: test
+        projects: $(projectFileTest)
+        arguments: -c $(buildConfiguration) 
+        publishTestResults: true
+
+    - task: CopyFiles@2
+      displayName: copy dockerfile
+      inputs:
+        sourceFolder: $(System.DefaultWorkingDirectory)
+        contents: Dockerfile
+        targetFolder: $(outputPath)
+
+    - task: DotNetCoreCLI@2
+      displayName: publish
+      inputs:
+        command: publish
+        arguments: -c $(configuration) -o $(outputPath) -f $(targetFramework)
+        zipAfterPublish: true
+
+    - task: PublishBuildArtifacts@1
+      displayName: publish artifacts
+      inputs:
+        pathtoPublish: $(outputPath)
+        artifactName: kamafi-liability
+        publishLocation: Container
