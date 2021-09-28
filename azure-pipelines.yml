@@ -39,7 +39,7 @@ stages:
       displayName: dotnet nuget add source
       inputs:
         targetType: inline
-        script: dotnet nuget add source -u $(GithubPackageUsername) -p $(GithubPackageToken) --store-password-in-clear-text --name github $(GithubPackageUrl)
+        script: dotnet nuget add source -u $(GithubPackageUsername) -p $(GithubPackageToken) --store-password-in-clear-text -n github $(GithubPackageUrl)
 
     - task: DotNetCoreCLI@2
       displayName: restore
