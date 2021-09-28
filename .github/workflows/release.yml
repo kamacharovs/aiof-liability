@@ -50,7 +50,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v3
       with:
-        images: gkama/aiof-liability
+        images: gkama/kamafi-liability
         tags: |
           latest
           
