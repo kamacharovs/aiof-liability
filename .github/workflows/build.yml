@@ -22,6 +22,9 @@ jobs:
       with:
         dotnet-version: 5.0.x
 
+    - name: dotnet nuget
+      run: dotnet nuget add source -u ${{ secrets.PACKAGE_USERNAME }} -p ${{ secrets.PACKAGE_TOKEN }} --store-password-in-clear-text -n github ${{ secrets.PACKAGE_URL }}
+
     - name: restore
       run: dotnet restore ${{ env.project_file }}
       
