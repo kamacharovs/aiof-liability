@@ -13,6 +13,8 @@ on:
         description: Environment
         required: true
         default: dev
+  pull_request:
+    branches: [ main ]
 
 jobs:
   release:
