@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using System.Text.Json;
 
-using Microsoft.AspNetCore.Http;
+using kamafi.core.data;
 
 namespace kamafi.liability.data
 {
@@ -53,17 +52,17 @@ namespace kamafi.liability.data
     {
         public static class Entity
         {
-            public const string LiabilityType = nameof(data.LiabilityType);
-            public const string Liability = nameof(data.Liability);
-            public const string Vehicle = nameof(data.Vehicle);
-            public const string Loan = nameof(data.Loan);
+            public static string LiabilityType = nameof(data.LiabilityType).ToSnakeCase();
+            public static string Liability = nameof(data.Liability).ToSnakeCase();
+            public static string Vehicle = $"{nameof(data.Liability)}{nameof(data.Vehicle)}".ToSnakeCase();
+            public static string Loan = $"{nameof(data.Liability)}{nameof(data.Loan)}".ToSnakeCase();
         }
     }
 
     public static class LiabilityTypes
     {
         public const string Base = "base";
-        public const string Vehicle = "Vehicle";
+        public const string Vehicle = "vehicle";
         public const string Loan = "loan";
         public const string Other = "other";
     }

@@ -63,6 +63,13 @@ namespace kamafi.liability.services
                 .ToListAsync();
         }
 
+        public async Task<T> GetAsync(int id)
+        {
+            return await GetQuery()
+                .FirstOrDefaultAsync(x => x.Id == id)
+                ?? throw new core.data.KamafiNotFoundException($"Liability with Id={id} was not found");
+        }
+
         public async Task<T> AddAsync(TDto dto)
         {
             var validatorResult = await _validator.ValidateAsync(dto, o => o.IncludeRuleSets(Constants.AddRuleSetMap[typeof(TDto).Name]));
@@ -76,13 +83,14 @@ namespace kamafi.liability.services
             await _context.Set<T>().AddAsync(liability);
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("{Tenant} | Created Liability with Id={LiabilityId}, PublicKey={LiabilityPublicKey} and UserId={LiabilityUserId}",
+            _logger.LogInformation("{Tenant} | Created {LiabilityType} with Id={LiabilityId}, PublicKey={LiabilityPublicKey} and UserId={LiabilityUserId}",
                 _context.Tenant.Log,
+                typeof(T).Name,
                 liability.Id,
                 liability.PublicKey,
                 liability.UserId);
 
-            return liability;
+            return await GetAsync(liability.Id);
         }
 
         public async Task DeleteAsync(int id)

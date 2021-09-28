@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace kamafi.liability.data
 {
@@ -19,7 +20,10 @@ namespace kamafi.liability.data
     public class LiabilityDto
     {
         public string Name { get; set; }
+
+        [JsonIgnore]
         public string TypeName { get; set; }
+
         public decimal? Value { get; set; }
         public decimal? MonthlyPayment { get; set; }
         public int? Years { get; set; }

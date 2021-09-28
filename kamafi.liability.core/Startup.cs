@@ -39,7 +39,8 @@ namespace kamafi.liability.core
                 .AddAutoMapper(typeof(LiabilityProfile).Assembly);
 
             services.AddSingleton<IValidator<LiabilityDto>, LiabilityDtoValidator<LiabilityDto>>()
-                .AddSingleton<IValidator<VehicleDto>, VehicleDtoValidator>();
+                .AddSingleton<IValidator<VehicleDto>, VehicleDtoValidator>()
+                .AddSingleton<IValidator<LoanDto>, LoanDtoValidator>();
 
             services.AddKamafiServices<LiabilityContext>(
                 new kamafi.core.data.KamafiConfiguration
@@ -52,7 +53,7 @@ namespace kamafi.liability.core
                 });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseKamafiServices(_config, _env);
         }
