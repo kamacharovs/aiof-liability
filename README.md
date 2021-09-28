@@ -33,3 +33,9 @@ docker run -it -e ASPNETCORE_ENVIRONMENT='Development' --rm -p 8000:80 gkama/kam
 ```pw
 docker push gkama/kamafi-liability:dev
 ```
+
+(Optional) Clean up `none` images
+
+```pw
+docker rmi $(docker images -f “dangling=true” -q)
+```
