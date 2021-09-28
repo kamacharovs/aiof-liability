@@ -83,7 +83,28 @@ namespace kamafi.liability.services
             await _context.Set<T>().AddAsync(liability);
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("{Tenant} | Created {LiabilityType} with Id={LiabilityId}, PublicKey={LiabilityPublicKey} and UserId={LiabilityUserId}",
+            _logger.LogInformation("{Tenant} | Created Liability={LiabilityType} with Id={LiabilityId}, PublicKey={LiabilityPublicKey} and UserId={LiabilityUserId}",
+                _context.Tenant.Log,
+                typeof(T).Name,
+                liability.Id,
+                liability.PublicKey,
+                liability.UserId);
+
+            return await GetAsync(liability.Id);
+        }
+
+        public async Task<T> UpdateAsync(
+            int id,
+            TDto dto)
+        {
+            var liability = await GetAsync(id);
+
+            liability = _mapper.Map(dto, liability);
+
+            _context.Set<T>().Update(liability);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("{Tenant} | Updated Liability={LiabilityType} with Id={LiabilityId}, PublicKey={LiabilityPublicKey} and UserId={LiabilityUserId}",
                 _context.Tenant.Log,
                 typeof(T).Name,
                 liability.Id,

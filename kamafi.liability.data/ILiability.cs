@@ -12,6 +12,7 @@ namespace kamafi.liability.data
         decimal Value { get; set; }
         decimal? MonthlyPayment { get; set; }
         int? Years { get; set; }
+        DateTime Created { get; set; }
         int UserId { get; set; }
         bool IsDeleted { get; set; }
     }

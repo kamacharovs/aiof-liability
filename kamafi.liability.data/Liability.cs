@@ -14,6 +14,7 @@ namespace kamafi.liability.data
         public decimal Value { get; set; }
         public decimal? MonthlyPayment { get; set; }
         public int? Years { get; set; }
+        public DateTime Created { get; set; } = DateTime.UtcNow;
         public int UserId { get; set; }
         public bool IsDeleted { get; set; } = false;
     }

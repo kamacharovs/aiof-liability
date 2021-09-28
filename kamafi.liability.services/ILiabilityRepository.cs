@@ -10,6 +10,7 @@ namespace kamafi.liability.services
     {
         Task<IEnumerable<Liability>> GetAsync();
         Task<Liability> AddAsync(LiabilityDto dto);
+        Task<Liability> UpdateAsync(int id, LiabilityDto dto);
         Task DeleteAsync(int id);
     }
 }
