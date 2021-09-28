@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 namespace kamafi.liability.data
 {
@@ -19,6 +20,7 @@ namespace kamafi.liability.data
 
     public class LiabilityDto
     {
+        [MaxLength(100)]
         public string Name { get; set; }
 
         [JsonIgnore]
