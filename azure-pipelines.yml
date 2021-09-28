@@ -28,16 +28,18 @@ stages:
         version: $(sdkVersion)
 
     - task: AzureKeyVault@2
+      displayName: add KeyVault
       inputs:
         azureSubscription: 'Visual Studio Enterprise (ca878169-d059-41cb-a0f0-d2e714ea53b5)'
         KeyVaultName: 'aiof-dev-kv'
         SecretsFilter: '*'
         RunAsPreJob: true
 
-    - task: DotNetCoreCLI@2
+    - task: Bash@3
+      displayName: dotnet nuget add source
       inputs:
-        command: custom
-        custom: dotnet nuget add source -u $(GithubPackageUsername) -p $(GithubPackageToken) --store-password-in-clear-text --name github $(GithubPackageUrl)
+        targetType: inline
+        script: dotnet nuget add source -u $(GithubPackageUsername) -p $(GithubPackageToken) --store-password-in-clear-text --name github $(GithubPackageUrl)
 
     - task: DotNetCoreCLI@2
       displayName: restore
