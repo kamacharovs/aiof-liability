@@ -18,6 +18,9 @@ namespace kamafi.liability.core
     [Route(Constants.ApiVehicleRoute)]
     [Produces(Constants.ApplicationJson)]
     [Consumes(Constants.ApplicationJson)]
+    [ProducesResponseType(typeof(kamafi.core.data.IKamafiProblemDetail), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(kamafi.core.data.IKamafiProblemDetailBase), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(kamafi.core.data.IKamafiProblemDetailBase), StatusCodes.Status401Unauthorized)]
     public class VehicleController : ControllerBase
     {
         private readonly IVehicleRepository _repo;

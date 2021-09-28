@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
@@ -21,6 +22,11 @@ namespace kamafi.liability.services
             LiabilityContext context)
             : base(logger, validator, mapper, context)
         { }
+
+        public new async Task<IEnumerable<Liability>> GetAsync()
+        {
+            return await base.GetAsync();
+        }
 
         public new async Task<Liability> AddAsync(LiabilityDto dto)
         {

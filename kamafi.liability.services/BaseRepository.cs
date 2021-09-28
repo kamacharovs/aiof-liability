@@ -57,6 +57,12 @@ namespace kamafi.liability.services
                 : query;
         }
 
+        public async Task<IEnumerable<T>> GetAsync()
+        {
+            return await GetQuery()
+                .ToListAsync();
+        }
+
         public async Task<T> AddAsync(TDto dto)
         {
             var validatorResult = await _validator.ValidateAsync(dto, o => o.IncludeRuleSets(Constants.AddRuleSetMap[typeof(TDto).Name]));
@@ -81,13 +87,13 @@ namespace kamafi.liability.services
 
         public async Task DeleteAsync(int id)
         {
-            var asset = await _context.Set<T>()
+            var liability = await _context.Set<T>()
                 .FirstOrDefaultAsync(x => x.Id == id)
                 ?? throw new core.data.KamafiNotFoundException($"Liability with Id={id} was not found");
 
-            asset.IsDeleted = true;
+            liability.IsDeleted = true;
 
-            _context.Set<T>().Update(asset);
+            _context.Set<T>().Update(liability);
             await _context.SaveChangesAsync();
 
             _logger.LogInformation("{Tenant} | Soft Deleted Liability with Id={LiabilityId}",

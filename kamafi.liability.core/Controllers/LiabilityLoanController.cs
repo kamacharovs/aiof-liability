@@ -18,6 +18,9 @@ namespace kamafi.liability.core
     [Route(Constants.ApiLoanRoute)]
     [Produces(Constants.ApplicationJson)]
     [Consumes(Constants.ApplicationJson)]
+    [ProducesResponseType(typeof(kamafi.core.data.IKamafiProblemDetail), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(kamafi.core.data.IKamafiProblemDetailBase), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(kamafi.core.data.IKamafiProblemDetailBase), StatusCodes.Status401Unauthorized)]
     public class LoanController : ControllerBase
     {
         private readonly ILoanRepository _repo;

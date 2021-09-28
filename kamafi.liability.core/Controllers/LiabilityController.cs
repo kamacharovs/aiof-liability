@@ -18,6 +18,9 @@ namespace kamafi.liability.core
     [Route(Constants.ApiRoute)]
     [Produces(Constants.ApplicationJson)]
     [Consumes(Constants.ApplicationJson)]
+    [ProducesResponseType(typeof(kamafi.core.data.IKamafiProblemDetail), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(kamafi.core.data.IKamafiProblemDetailBase), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(kamafi.core.data.IKamafiProblemDetailBase), StatusCodes.Status401Unauthorized)]
     public class LiabilityController : ControllerBase
     {
         private readonly ILiabilityRepository _repo;
@@ -26,6 +29,16 @@ namespace kamafi.liability.core
             ILiabilityRepository repo)
         {
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
+        }
+
+        /// <summary>
+        /// Get Liabilities
+        /// </summary>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<ILiability>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAsync()
+        {
+            return Ok(await _repo.GetAsync());
         }
 
         /// <summary>
