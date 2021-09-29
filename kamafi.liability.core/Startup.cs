@@ -46,8 +46,8 @@ namespace kamafi.liability.core
                 new kamafi.core.data.KamafiConfiguration
                 {
                     Config = _config,
-                    OpenApiName = Constants.ApiName,
-                    OpenApiVersion = Constants.ApiV1,
+                    OpenApiName = Constants.ApiV1Full,
+                    OpenApiVersion = Constants.ApiV1Full,
                     DefaultApiVersion = Constants.ApiV1,
                     XmlCommentsPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml")
                 });
