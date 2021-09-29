@@ -39,3 +39,28 @@ docker push gkama/kamafi-liability:dev
 ```pw
 docker rmi $(docker images -f “dangling=true” -q)
 ```
+
+```yaml
+
+    - name: docker meta
+      id: meta
+      uses: docker/metadata-action@v3
+      with:
+        images: gkama/kamafi-liability
+        tags: |
+          latest
+
+    - name: docker login
+      uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: docker build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+```
